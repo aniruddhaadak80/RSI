@@ -32,40 +32,114 @@ Many projects use the words self improve. Few meet the full meaning. This atlas 
 
 The atlas groups systems into four layers. The behavior layer refines answers at run time with feedback and retry. The training layer turns good traces into weight updates through self data, self reward, or self play. The evaluator layer builds judges, verifiers, reward models, rubrics, and meta checks that decide what good means. The research layer runs agents that propose experiments, run code, read results, and plan the next study. Foundations and safety form the base that holds all four layers honest.
 
-## End To End Flowchart
+## End To End Flowcharts
 
-The chart below renders on GitHub with Mermaid. It shows the full cycle from task to durable gain.
+The charts below render on GitHub with Mermaid. The first shows the full cycle from task to durable gain with color by stage. Amber marks intake, emerald marks building, cyan marks checking, teal marks memory.
 
 ```mermaid
 flowchart TD
-  Task[Task arrives with clear goal] --> Plan[Planner drafts approach and checks]
-  Plan --> Act[Actor writes code or answer]
-  Act --> Trace[Trace recorder saves steps and costs]
-  Trace --> Eval[Evaluator scores result with tests]
-  Eval --> Reflect[Reflector writes lesson in plain words]
-  Reflect --> Propose[Proposer suggests one small change]
-  Propose --> Gate[Safety gate checks scope and risk]
-  Gate --> Apply[Apply change on separate branch]
-  Apply --> Retest[Retest full suite and judge quality]
-  Retest --> Keep{Gain confirmed}
-  Keep -->|Yes| Memory[Memory stores win and updates method]
-  Keep -->|No| Revert[Revert branch and store lesson]
+  subgraph Intake [Intake in amber]
+    Task[Task arrives with clear goal]
+    Plan[Planner drafts approach and checks]
+  end
+  subgraph Build [Build in emerald]
+    Act[Actor writes code or answer]
+    Trace[Trace recorder saves steps and costs]
+    Propose[Proposer suggests one small change]
+    Apply[Apply change on separate branch]
+  end
+  subgraph Check [Check in cyan]
+    Eval[Evaluator scores result with tests]
+    Reflect[Reflector writes lesson in plain words]
+    Gate[Safety gate checks scope and risk]
+    Retest[Retest full suite and judge quality]
+    Keep{Gain confirmed}
+  end
+  subgraph KeepWin [Memory in teal]
+    Memory[Memory stores win and updates method]
+    Revert[Revert branch and store lesson]
+  end
+  Task --> Plan
+  Plan --> Act
+  Act --> Trace
+  Trace --> Eval
+  Eval --> Reflect
+  Reflect --> Propose
+  Propose --> Gate
+  Gate --> Apply
+  Apply --> Retest
+  Retest --> Keep
+  Keep -->|Yes| Memory
+  Keep -->|No| Revert
   Memory --> Task
   Revert --> Task
+  classDef amber fill:#fffbeb,stroke:#92400e,stroke-width:2px,color:#451a03
+  classDef emerald fill:#ecfdf5,stroke:#047857,stroke-width:2px,color:#064e3b
+  classDef cyan fill:#ecfeff,stroke:#0e7490,stroke-width:2px,color:#164e63
+  classDef teal fill:#f0fdfa,stroke:#0f766e,stroke-width:2px,color:#134e4a
+  classDef slate fill:#f1f5f9,stroke:#0f172a,stroke-width:2px,color:#0f172a
+  class Task,Plan amber
+  class Act,Trace,Propose,Apply emerald
+  class Eval,Reflect,Gate,Retest,Keep cyan
+  class Memory,Revert teal
 ```
 
-The second chart shows the safety boundary. The judge and the gate stay fixed while the worker changes.
+The second chart shows the safety boundary. The judge and the gate stay fixed while the worker changes. Slate marks frozen ground, blue marks review, emerald marks kept progress.
 
 ```mermaid
 flowchart LR
-  Worker[Worker zone that may change] --> Candidate[Candidate patch plus test]
-  Candidate --> FrozenJudge[Frozen judge and full test suite]
-  FrozenJudge --> Decision{Accept or reject}
-  Decision -->|Accept| Mainline[Mainline advances one safe step]
-  Decision -->|Reject| Archive[Archive stores reason for later study]
+  subgraph Change [Worker zone in emerald]
+    Worker[Worker zone that may change]
+    Candidate[Candidate patch plus test]
+  end
+  subgraph Frozen [Frozen ground in slate]
+    FrozenJudge[Frozen judge and full test suite]
+    Policy[Human policy and kill switch]
+  end
+  subgraph Outcome [Outcome in blue and teal]
+    Decision{Accept or reject}
+    Mainline[Mainline advances one safe step]
+    Archive[Archive stores reason for later study]
+  end
+  Worker --> Candidate
+  Candidate --> FrozenJudge
+  Policy --> FrozenJudge
+  FrozenJudge --> Decision
+  Decision -->|Accept| Mainline
+  Decision -->|Reject| Archive
   Mainline --> Worker
   Archive --> Worker
-  Policy[Human policy and kill switch] --> FrozenJudge
+  classDef emerald fill:#ecfdf5,stroke:#047857,stroke-width:2px,color:#064e3b
+  classDef slate fill:#f1f5f9,stroke:#0f172a,stroke-width:2px,color:#0f172a
+  classDef blue fill:#eff6ff,stroke:#1d4ed8,stroke-width:2px,color:#1e3a8a
+  classDef teal fill:#f0fdfa,stroke:#0f766e,stroke-width:2px,color:#134e4a
+  class Worker,Candidate emerald
+  class FrozenJudge,Policy slate
+  class Decision blue
+  class Mainline,Archive teal
+```
+
+The third chart shows how data, harness, and model operators share one kernel. One loop serves all three surfaces with one artifact vocabulary.
+
+```mermaid
+flowchart TD
+  Kernel[One loop kernel with task trace score lesson patch verdict] --> Data[Data operator grows traces and marks skill edge]
+  Kernel --> Harness[Harness operator edits prompts tools contracts workflow]
+  Kernel --> Model[Model operator turns kept traces into weight updates]
+  Data --> Schedule[Scheduler picks order by gain cost risk coverage]
+  Harness --> Schedule
+  Model --> Schedule
+  Schedule --> Meta[Meta policy revises schedule across terms]
+  Meta --> Kernel
+  classDef kernel fill:#0f172a,stroke:#0f172a,stroke-width:2px,color:#f8fafc
+  classDef emerald fill:#ecfdf5,stroke:#047857,stroke-width:2px,color:#064e3b
+  classDef amber fill:#fffbeb,stroke:#92400e,stroke-width:2px,color:#451a03
+  classDef cyan fill:#ecfeff,stroke:#0e7490,stroke-width:2px,color:#164e63
+  class Kernel kernel
+  class Data emerald
+  class Harness amber
+  class Model cyan
+  class Schedule,Meta emerald
 ```
 
 The rhythm is steady on purpose. One task enters. One change is tried. One verdict is recorded. The system moves forward by kept wins, not by claims.
@@ -110,30 +184,30 @@ Meta evaluation keeps judges honest. Judge agreement is tracked across cycles. J
 
 The field is moving fast. A July 2026 survey organizes about 1250 arXiv papers from 2024 through 2026 into deployment evolution, training iteration, self evaluation, auto research, and foundations with safety. The survey makes one clean cut. Bounded refinement improves behavior against a fixed external check. Open ended recursion also changes the method and the criteria. The second path is far less proven and far more brittle. The atlas follows that cut and treats grounded checks as the scarce resource.
 
-The table below collects anchor papers and recent advances that shape this build. Dates use year month form for quick scan. Links use plain text so the table stays calm.
+The table below collects anchor papers and recent advances that shape this build. Every row carries a clickable link so anyone can open the source and verify the claim.
 
-| Paper | Year | Core idea | Why it matters for this atlas |
-|---|---|---|---|
-| Godel Machines by Schmidhuber | 2003 | Self rewrite only after proof of utility, with global optimality framing | Sets the classic ideal of provable self change and explains why practice uses empirical gates instead |
-| STaR Self Taught Reasoner | 2022 | Bootstrap rationales, keep those that lead to right answers, repeat | Gives the simplest training time loop of generate, filter, finetune, repeat |
-| Self Refine | 2023 | One model acts as writer, critic, and reviser in a short loop | Gives the behavior layer pattern for test time repair without new weights |
-| Reflexion | 2023 | Verbal reflection stored in episodic memory guides next trial | Gives the memory pattern of lessons that persist across trials |
-| FunSearch | 2023 | Pair code generating model with automatic evaluator in evolution | Shows how a strong evaluator plus diversity can find new programs |
-| Self Rewarding Language Models | 2024 | Same model generates answers and judges them for preference training | Shows a genuinely recursive training signal and its saturation risk |
-| Godel Agent | 2024 | Self referential agent that reads and patches its own runtime code | Gives the runtime self patch model used by many later demos |
-| Darwin Godel Machine | 2025 | Archive of agents plus empirical validation on coding benchmarks | Shows open ended search over agent code with SWE bench gains from 20 to 50 percent |
-| AlphaEvolve | 2025 | Evolutionary coding agent for science and infra with rich context | Extends FunSearch to full files and multi objective search |
-| MetaEvolve | 2026 | Train meta skills for multi round repair with execution rewards | Moves repair skill into the model rather than the scaffold |
-| Recursive Self Improvement in AI Survey | 2026 | Taxonomy across behavior, policy, evaluator, and research loops | Supplies the map used to organize this atlas |
-| Dream RSI through Evolving Worlds | 2026 | Replay simulator from discovery trees gives cheap off policy feedback | Shows how to cut exploration cost without losing discovery quality |
-| Meta N through Emergent Depth | 2026 | Fixed meta operator applied to growing input across layers | Shows depth by convergence with distinct layer roles |
-| MetaRSI RSI2 | 2026 | Compose data, harness, and model operators under one loop kernel | Supplies the three operator vocabulary reused in this design |
-| Generalized Agent Iteration | 2026 | Formal frame for policy iteration and RSI with grounding dials | Gives language for anchored versus drifting versus self referential loops |
-| Recursive Harness Self Improvement | 2026 | Prompt level harness edits guided by pairwise history feedback | Shows context management gains and cost reduction near 60 percent in reported settings |
-| RSIAgent | 2026 | Training free multi agent memory construction for new environments | Shows broad then deep exploration with frozen reusable memory |
-| The Last AI Built by Humans | 2026 | Roadmap from execution autonomy to recursive meta improvement | Frames scenario needs across science, embodied work, and software |
-| Karpathy autoresearch | 2026 | Single file training loop with fixed time budget and keep or revert discipline | Gives the minimal public template of propose, train, evaluate, keep or discard |
-| Anthropic progress note on RSI | 2026 | Report of high autonomous code share and faster horizons in industry practice | Signals that harness plus model co evolution is now operational work, not only theory |
+| Paper | Year | Core idea | Why it matters for this atlas | Link |
+|---|---|---|---|---|
+| Godel Machines by Schmidhuber | 2003 | Self rewrite only after proof of utility, with global optimality framing | Sets the classic ideal of provable self change and explains why practice uses empirical gates instead | [Verify](https://arxiv.org/abs/cs/0309048) |
+| STaR Self Taught Reasoner | 2022 | Bootstrap rationales, keep those that lead to right answers, repeat | Gives the simplest training time loop of generate, filter, finetune, repeat | [Verify](https://arxiv.org/abs/2203.14465) |
+| Self Refine | 2023 | One model acts as writer, critic, and reviser in a short loop | Gives the behavior layer pattern for test time repair without new weights | [Verify](https://arxiv.org/abs/2303.17651) |
+| Reflexion | 2023 | Verbal reflection stored in episodic memory guides next trial | Gives the memory pattern of lessons that persist across trials | [Verify](https://arxiv.org/abs/2303.11366) |
+| FunSearch | 2023 | Pair code generating model with automatic evaluator in evolution | Shows how a strong evaluator plus diversity can find new programs | [Verify](https://arxiv.org/abs/2305.20050) |
+| Self Rewarding Language Models | 2024 | Same model generates answers and judges them for preference training | Shows a genuinely recursive training signal and its saturation risk | [Verify](https://arxiv.org/abs/2401.10020) |
+| Godel Agent | 2024 | Self referential agent that reads and patches its own runtime code | Gives the runtime self patch model used by many later demos | [Verify](https://arxiv.org/abs/2410.04444) |
+| Darwin Godel Machine | 2025 | Archive of agents plus empirical validation on coding benchmarks | Shows open ended search over agent code with SWE bench gains from 20 to 50 percent | [Verify](https://arxiv.org/abs/2505.22954) |
+| AlphaEvolve | 2025 | Evolutionary coding agent for science and infra with rich context | Extends FunSearch to full files and multi objective search | [Verify](https://arxiv.org/abs/2506.13131) |
+| MetaEvolve | 2026 | Train meta skills for multi round repair with execution rewards | Moves repair skill into the model rather than the scaffold | [Verify](https://arxiv.org/abs/2607.21971) |
+| Recursive Self Improvement in AI Survey | 2026 | Taxonomy across behavior, policy, evaluator, and research loops | Supplies the map used to organize this atlas | [Verify](https://arxiv.org/abs/2607.07663) |
+| Dream RSI through Evolving Worlds | 2026 | Replay simulator from discovery trees gives cheap off policy feedback | Shows how to cut exploration cost without losing discovery quality | [Verify](https://arxiv.org/abs/2609.14858) |
+| Meta N through Emergent Depth | 2026 | Fixed meta operator applied to growing input across layers | Shows depth by convergence with distinct layer roles | [Verify](https://arxiv.org/abs/2608.24735) |
+| MetaRSI RSI2 | 2026 | Compose data, harness, and model operators under one loop kernel | Supplies the three operator vocabulary reused in this design | [Verify](https://arxiv.org/abs/2609.06396) |
+| Generalized Agent Iteration | 2026 | Formal frame for policy iteration and RSI with grounding dials | Gives language for anchored versus drifting versus self referential loops | [Verify](https://arxiv.org/abs/2609.13406) |
+| Recursive Harness Self Improvement | 2026 | Prompt level harness edits guided by pairwise history feedback | Shows context management gains and cost reduction near 60 percent in reported settings | [Verify](https://arxiv.org/abs/2607.15524) |
+| RSIAgent | 2026 | Training free multi agent memory construction for new environments | Shows broad then deep exploration with frozen reusable memory | [Verify](https://arxiv.org/abs/2609.15364) |
+| The Last AI Built by Humans | 2026 | Roadmap from execution autonomy to recursive meta improvement | Frames scenario needs across science, embodied work, and software | [Verify](https://arxiv.org/abs/2609.11873) |
+| Karpathy autoresearch | 2026 | Single file training loop with fixed time budget and keep or revert discipline | Gives the minimal public template of propose, train, evaluate, keep or discard | [Verify](https://github.com/karpathy/autoresearch) |
+| Anthropic progress note on RSI | 2026 | Report of high autonomous code share and faster horizons in industry practice | Signals that harness plus model co evolution is now operational work, not only theory | Industry note, see discussion links in docs |
 
 Independent sources add useful texture. Frontier lab notes describe harness plus model co evolution, where better scaffolds yield better traces and better traces train better models. Community essays describe the Karpathy loop as one file plus one metric plus one time box. Safety notes stress sandboxing, human oversight, branch isolation, and immutable judges. This atlas keeps all three lessons visible.
 
@@ -143,23 +217,22 @@ Public RSI repos range from strong systems to thin wrappers. Many repos reuse th
 
 The table below records the review outcome at the time of writing. Stars and dates move with time, so the verdict column focuses on structure rather than fame.
 
-| Repository | Signals | Verdict |
-|---|---|---|
-| jennyzzt slash dgm | Large star base near 2200, paper linked, archive search, SWE bench and Polyglot evaluation, active issues | Trusted reference for open ended agent evolution |
-| Arvid pku slash Godel Agent | Paper linked, star base above 200, runnable agent modules, task scripts, clear self patch design | Trusted reference for self referential runtime |
-| kayba ai slash recursive improve | Star base above 200, trace capture plus skill plus benchmark plus dashboard plus ratchet loop | Trusted reference for trace driven product loop |
-| karpathy slash autoresearch | Canonical minimal loop, single editable training file, fixed budget, keep or discard discipline, wide fork network | Trusted reference for minimal research loop |
-| sunghunkwag slash self improving research kernel | Bounded loop, immutable guard, full test promotion gate, capability fixtures, proposal archive | Trusted reference for gated promotion and anti cheat design |
-| noahshinn024 slash reflexion | Classic verbal reinforcement baseline with strong HumanEval era results | Trusted reference for reflection memory |
-| az9713 slash recursive self improvement | Program genetic framing with Pareto selection and benchmark docs | Useful study, smaller community, review code before reuse |
-| hankbesser slash recursive agents | Three phase draft critique revision framing with templates | Useful study for scaffold patterns, check maintenance |
-| theprint slash nfh self improvement loop | Generator evaluator separation with hard shell guards and branch discipline | Useful study for separation enforcement |
-| hilarl slash recursive selves | Research framing on revision plus evidence | Early stage, watch for runnable depth |
-| NvlFR slash self evolving agent | Ambitious SEED framing with mapper, auditor, tester, monitor | Early stage, many open issues, verify before reuse |
-| aumiqx slash curious | Daily creation plus self evolution framing with uniqueness score | Creative study, thin on standard benchmarks |
-| ai in pm slash Recursive Self Improvement AI Agent | Small Godel inspired framework with multi API notes | Thin, verify tests and runs before trust |
-| aicatalyst team slash gbase fork | Identity plus memory plus evolution claims in fork form | Thin fork, verify upstream changes before trust |
-| Generic RSI keyword repos with one commit | Zero stars, zero forks, no tests, no runs, keyword readme only | Spam pattern, do not cite as evidence |
+| Repository | Signals | Verdict | Link |
+|---|---|---|---|
+| jennyzzt slash dgm | Large star base near 2200, paper linked, archive search, SWE bench and Polyglot evaluation, active issues | Trusted reference for open ended agent evolution | [Open](https://github.com/jennyzzt/dgm) |
+| Arvid pku slash Godel Agent | Paper linked, star base above 200, runnable agent modules, task scripts, clear self patch design | Trusted reference for self referential runtime | [Open](https://github.com/Arvid-pku/Godel_Agent) |
+| kayba ai slash recursive improve | Star base above 200, trace capture plus skill plus benchmark plus dashboard plus ratchet loop | Trusted reference for trace driven product loop | [Open](https://github.com/kayba-ai/recursive-improve) |
+| karpathy slash autoresearch | Canonical minimal loop, single editable training file, fixed budget, keep or discard discipline, wide fork network | Trusted reference for minimal research loop | [Open](https://github.com/karpathy/autoresearch) |
+| sunghunkwag slash self improving research kernel | Bounded loop, immutable guard, full test promotion gate, capability fixtures, proposal archive | Trusted reference for gated promotion and anti cheat design | [Open](https://github.com/sunghunkwag/self-improving-research-kernel) |
+| noahshinn024 slash reflexion | Classic verbal reinforcement baseline with strong HumanEval era results | Trusted reference for reflection memory | [Open](https://github.com/noahshinn024/reflexion) |
+| az9713 slash recursive self improvement | Program genetic framing with Pareto selection and benchmark docs | Useful study, smaller community, review code before reuse | [Open](https://github.com/az9713/recursive-self-improvement) |
+| hankbesser slash recursive agents | Three phase draft critique revision framing with templates | Useful study for scaffold patterns, check maintenance | [Open](https://github.com/hankbesser/recursive-agents) |
+| theprint slash nfh self improvement loop | Generator evaluator separation with hard shell guards and branch discipline | Useful study for separation enforcement | [Open](https://github.com/theprint/nfh-self-improvement-loop) |
+| hilarl slash recursive selves | Research framing on revision plus evidence | Early stage, watch for runnable depth | [Open](https://github.com/hilarl/recursive-selves) |
+| NvlFR slash self evolving agent | Ambitious SEED framing with mapper, auditor, tester, monitor | Early stage, many open issues, verify before reuse | [Open](https://github.com/NvlFR/self-evolving-agent) |
+| aumiqx slash curious | Daily creation plus self evolution framing with uniqueness score | Creative study, thin on standard benchmarks | [Open](https://github.com/aumiqx/curious) |
+| ai in pm slash Recursive Self Improvement AI Agent | Small Godel inspired framework with multi API notes | Thin, verify tests and runs before trust | [Open](https://github.com/ai-in-pm/Recursive-Self-Improvement-AI-Agent) |
+| Generic RSI keyword repos with one commit | Zero stars, zero forks, no tests, no runs, keyword readme only | Spam pattern, do not cite as evidence | Search GitHub with care |
 
 Spam patterns repeat with steady rhythm. Watch for repos that copy a paper abstract with no code. Watch for repos that add RSI to the title but ship only a chat wrapper. Watch for forks with no diff beyond the readme. Watch for benchmark claims with no logs. Watch for agents that judge their own work with no separate check. Watch for update bursts that only touch stars badges. The atlas treats these as noise and keeps them out of the trusted path.
 
@@ -227,6 +300,26 @@ Near term work focuses on legibility and small safe wins. The diary format will 
 Mid term work focuses on composition across operators. Data, harness, and model loops will share schedules with joint budgets. Transfer tests will cover new domains with true held out cases. The archive will support lineage views that show which old win enabled a later breakthrough.
 
 Long term work focuses on measured autonomy. Broader tasks will enter only with stronger sandboxes and clearer stop rules. Meta scheduling will revise operator order from evidence rather than habit. Governance grade measurement will track autonomy, grounding strength, and drift with the same rigor as accuracy.
+
+## Live Deployment
+
+The docs app is deployed for public reading. Open the home page at [aniruddhaadak-rsi.vercel.app](https://aniruddhaadak-rsi.vercel.app) and move through the sidebar from Start to Roadmap. The docs index lives at [aniruddhaadak-rsi.vercel.app slash docs](https://aniruddhaadak-rsi.vercel.app/docs) and the gentle intro lives at [aniruddhaadak-rsi.vercel.app slash docs slash start](https://aniruddhaadak-rsi.vercel.app/docs/start). The source repo lives at [github.com slash aniruddhaadak80 slash RSI](https://github.com/aniruddhaadak80/RSI).
+
+## Site Preview
+
+The shots below show the live reading experience with the left sidebar, calm cards, flow steps, and tables. They are captured from the production deployment so reviewers can see the design without leaving GitHub.
+
+<p>
+<img src="docs/public/shots/home.png" alt="RSI Atlas home page with hero metrics and loop preview" width="100%">
+</p>
+
+The home view above shows the hero, the metric cards, and the six beat loop preview in emerald, teal, amber, and cyan on a soft slate ground.
+
+<p>
+<img src="docs/public/shots/docs-start.png" alt="RSI Atlas docs start page with sidebar and plain words intro" width="100%">
+</p>
+
+The docs view above shows the fixed left sidebar with grouped contents plus the plain words intro with tables and code.
 
 ## Contributing
 

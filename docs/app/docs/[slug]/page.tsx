@@ -18,6 +18,13 @@ export default function DocSlugPage({ params }: { params: { slug: string } }) {
 
   return (
     <article className="doc-article">
+      <nav className="crumb" aria-label="Breadcrumb">
+        <Link className="crumb-link" href="/">Home</Link>
+        <span className="crumb-sep" aria-hidden="true">/</span>
+        <Link className="crumb-link" href="/docs">Docs</Link>
+        <span className="crumb-sep" aria-hidden="true">/</span>
+        <span className="crumb-current">{doc.title}</span>
+      </nav>
       <span className="eyebrow">{doc.group}</span>
       <h1>{doc.title}</h1>
       <p className="doc-summary">{doc.summary}</p>
@@ -85,8 +92,23 @@ export default function DocSlugPage({ params }: { params: { slug: string } }) {
           <h2>Continue reading</h2>
           <div className="inline-links">
             {doc.links.map(function (link) {
+              const external = link.target.slice(0, 4) === "http";
+              if (external) {
+                return (
+                  <a
+                    className="inline-link"
+                    key={link.target.concat(link.label)}
+                    href={link.target}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <div className="inline-link-label">{link.label}</div>
+                    <div className="inline-link-target">{link.target}</div>
+                  </a>
+                );
+              }
               return (
-                <Link className="inline-link" key={link.target} href={link.target}>
+                <Link className="inline-link" key={link.target.concat(link.label)} href={link.target}>
                   <div className="inline-link-label">{link.label}</div>
                   <div className="inline-link-target">{link.target}</div>
                 </Link>
@@ -95,6 +117,13 @@ export default function DocSlugPage({ params }: { params: { slug: string } }) {
           </div>
         </div>
       ) : null}
+
+      <div className="repo-line">
+        <span>Found a gap in this page.</span>
+        <a href="https://github.com/aniruddhaadak80/RSI" target="_blank" rel="noreferrer">
+          Open the GitHub repo to propose a fix
+        </a>
+      </div>
 
       <div className="pager">
         <div>

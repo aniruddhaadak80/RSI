@@ -320,6 +320,25 @@ export const docs: DocPage[] = [
     ],
     codeSamples: [],
     links: [
+      { label: "Godel Machines classic paper", target: "https://arxiv.org/abs/cs/0309048" },
+      { label: "STaR Self Taught Reasoner", target: "https://arxiv.org/abs/2203.14465" },
+      { label: "Self Refine", target: "https://arxiv.org/abs/2303.17651" },
+      { label: "Reflexion", target: "https://arxiv.org/abs/2303.11366" },
+      { label: "FunSearch", target: "https://arxiv.org/abs/2305.20050" },
+      { label: "Self Rewarding Language Models", target: "https://arxiv.org/abs/2401.10020" },
+      { label: "Godel Agent", target: "https://arxiv.org/abs/2410.04444" },
+      { label: "Darwin Godel Machine", target: "https://arxiv.org/abs/2505.22954" },
+      { label: "AlphaEvolve", target: "https://arxiv.org/abs/2506.13131" },
+      { label: "MetaEvolve", target: "https://arxiv.org/abs/2607.21971" },
+      { label: "RSI Survey across 1250 papers", target: "https://arxiv.org/abs/2607.07663" },
+      { label: "Dream RSI", target: "https://arxiv.org/abs/2609.14858" },
+      { label: "Meta N emergent depth", target: "https://arxiv.org/abs/2608.24735" },
+      { label: "MetaRSI RSI2", target: "https://arxiv.org/abs/2609.06396" },
+      { label: "Generalized Agent Iteration", target: "https://arxiv.org/abs/2609.13406" },
+      { label: "Recursive Harness Self Improvement", target: "https://arxiv.org/abs/2607.15524" },
+      { label: "RSIAgent", target: "https://arxiv.org/abs/2609.15364" },
+      { label: "The Last AI Built by Humans", target: "https://arxiv.org/abs/2609.11873" },
+      { label: "Karpathy autoresearch", target: "https://github.com/karpathy/autoresearch" },
       { label: "Code review with spam filter", target: "/docs/code-review" },
       { label: "Core loop deep dive", target: "/docs/loop" }
     ]
@@ -376,6 +395,12 @@ export const docs: DocPage[] = [
     ],
     codeSamples: [],
     links: [
+      { label: "Darwin Godel Machine repo", target: "https://github.com/jennyzzt/dgm" },
+      { label: "Godel Agent repo", target: "https://github.com/Arvid-pku/Godel_Agent" },
+      { label: "Recursive improve repo", target: "https://github.com/kayba-ai/recursive-improve" },
+      { label: "Karpathy autoresearch repo", target: "https://github.com/karpathy/autoresearch" },
+      { label: "Reflexion repo", target: "https://github.com/noahshinn024/reflexion" },
+      { label: "This atlas repo", target: "https://github.com/aniruddhaadak80/RSI" },
       { label: "Research map", target: "/docs/research-papers" },
       { label: "Safety boundary", target: "/docs/safety" }
     ]

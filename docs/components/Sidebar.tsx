@@ -64,6 +64,25 @@ export default function Sidebar() {
           <div className="sidebar-link-title">Atlas home</div>
           <div className="sidebar-link-summary">Hero plus previews</div>
         </Link>
+        <div className="sidebar-group-label">Project</div>
+        <a
+          className="sidebar-link sidebar-gh"
+          href="https://github.com/aniruddhaadak80/RSI"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <div className="sidebar-link-title">GitHub repo</div>
+          <div className="sidebar-link-summary">Source, engine, and docs in one place</div>
+        </a>
+        <a
+          className="sidebar-link"
+          href="https://aniruddhaadak-rsi.vercel.app/docs"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <div className="sidebar-link-title">Live deployment</div>
+          <div className="sidebar-link-summary">Production docs on Vercel</div>
+        </a>
         <div style={{ height: 12 }} />
       </div>
     </aside>
