@@ -563,7 +563,153 @@ export const docs: DocPage[] = [
     codeSamples: [],
     links: [
       { label: "Build and run", target: "/docs/build" },
-      { label: "Safety boundary", target: "/docs/safety" }
+      { label: "Safety boundary", target: "/docs/safety" },
+      { label: "Glossary in plain words", target: "/docs/glossary" }
+    ]
+  },
+  {
+    slug: "glossary",
+    title: "Glossary In Plain Words",
+    summary: "Every core term defined in short sentences with pointers to the page that teaches it.",
+    group: "Start",
+    readingTime: "7 min read",
+    difficulty: "Easy",
+    updated: "2026-09-19",
+    sections: [
+      {
+        heading: "How to use this page",
+        paragraphs: [
+          "Read a term, then follow it to the page that shows it in action. Terms stay short on purpose so students and builders share one vocabulary.",
+          "When a discussion drifts, return here and reset on the plain meaning before continuing."
+        ]
+      },
+      {
+        heading: "Core loop terms",
+        paragraphs: [
+          "A trace is the saved record of one attempt. A score is the test plus judge result. A lesson names the failure pattern and the repair idea. A patch is one small change plus one matching test. A verdict accepts or rejects with a reason. Memory keeps wins and lessons across cycles.",
+          "Grounding is the outside check that keeps the loop honest. A frozen path is judge, gate, or entry code that the loop may never edit. A transfer check is a hidden case the generator never sees during search."
+        ]
+      }
+    ],
+    tables: [
+      {
+        title: "Terms with home pages",
+        headers: ["Term", "Plain meaning", "Learn it in"],
+        rows: [
+          ["Trace", "Saved steps, outputs, costs, timings", "Core loop"],
+          ["Score", "Comparable test plus judge result", "Evaluation"],
+          ["Lesson", "Pattern, cause, repair, risk", "Core loop"],
+          ["Patch", "One change plus one test", "Build"],
+          ["Verdict", "Accept or reject with reason", "Core loop"],
+          ["Grounding", "Outside check that proves gain", "Evaluation"],
+          ["Frozen path", "Judge and gate code, never edited by loop", "Safety"],
+          ["Transfer check", "Hidden case for generality proof", "Benchmarks"],
+          ["Archive", "Rejected tries with reasons kept", "Code review"],
+          ["Drift", "Goals shifting without review", "Failure drills"]
+        ]
+      }
+    ],
+    codeSamples: [],
+    links: [
+      { label: "Start with simple words", target: "/docs/start" },
+      { label: "Core loop deep dive", target: "/docs/loop" },
+      { label: "Benchmarks and transfer checks", target: "/docs/benchmarks" }
+    ]
+  },
+  {
+    slug: "benchmarks",
+    title: "Benchmarks And Transfer Checks",
+    summary: "Which public benchmarks prove what, plus how to hold out transfer cases that block quiet gaming.",
+    group: "Evaluation",
+    readingTime: "10 min read",
+    difficulty: "Intermediate",
+    updated: "2026-09-19",
+    sections: [
+      {
+        heading: "What each benchmark proves",
+        paragraphs: [
+          "Coding benchmarks such as SWE bench and Polyglot test whether an agent can read, edit, and repair real code under tests. Reasoning sets such as GSM8K and MATH test step by step problem solving. Decision suites such as HotPotQA and AlfWorld test search plus multi step choices. HumanEval era code tasks test single shot generation with hidden tests.",
+          "No single suite proves recursion. A benchmark proves a skill at one moment. Recursion is proven by the diary across cycles, where the same suite plus fresh transfer cases move together."
+        ]
+      },
+      {
+        heading: "Holding out transfer the right way",
+        paragraphs: [
+          "Split every fixture into public checks the generator may see and hidden checks it never sees during search. Promotion runs hidden checks once with full logs. A patch that passes public checks but fails hidden ones returns to the archive with its residue.",
+          "Rotate hidden sets on a schedule and track the gap between public and hidden scores. A widening gap means the loop is learning the school instead of the subject, so difficulty steps down and diversity checks tighten."
+        ]
+      }
+    ],
+    tables: [
+      {
+        title: "Benchmark map used across the atlas",
+        headers: ["Benchmark", "Skill under test", "Atlas use"],
+        rows: [
+          ["SWE bench", "Real code repair under tests", "Archive search validation"],
+          ["Polyglot", "Multilingual code tasks", "Second validation axis"],
+          ["GSM8K", "Math word problems", "Reasoning fixtures"],
+          ["ARC AGI", "Visual pattern generalization", "Transfer probe"],
+          ["HotPotQA", "Multi hop search answers", "Decision memory test"],
+          ["AlfWorld", "Household multi step tasks", "Reflection memory test"],
+          ["HumanEval", "Single shot code generation", "Classic baseline"]
+        ]
+      }
+    ],
+    codeSamples: [],
+    links: [
+      { label: "Evaluation that deserves trust", target: "/docs/evaluation" },
+      { label: "Research map across papers", target: "/docs/research-papers" },
+      { label: "Build and run the atlas", target: "/docs/build" }
+    ]
+  },
+  {
+    slug: "failure-drills",
+    title: "Failure Drills And Recovery",
+    summary: "Named failure modes with rehearsal steps, early signs, guards, and rollback moves.",
+    group: "Safety",
+    readingTime: "11 min read",
+    difficulty: "Advanced",
+    updated: "2026-09-19",
+    sections: [
+      {
+        heading: "How drills run",
+        paragraphs: [
+          "Each drill injects one fault on a branch, watches the guards fire, then recovers to the last kept mainline. Drills run on a schedule so recovery stays muscle memory rather than theory.",
+          "Every drill writes the same record shape as a real cycle, with task, trace, score, lesson, patch, and verdict files, so reviewers can audit the rehearsal like production history."
+        ]
+      },
+      {
+        heading: "Drill book",
+        paragraphs: [
+          "Self confirming judge drill feeds weak patches to a judge that approves everything, then checks that calibration sets flag the judge as broken before any promotion. Diversity collapse drill fills the archive with near copies and checks that novelty scoring plus parent sampling restore spread.",
+          "Metric gaming drill raises a proxy score while hidden transfer stalls, then checks that the held out gate blocks promotion. Direction drift drill edits goals without review and checks that schedule logs plus human checkpoints reject the run. Frozen path drill proposes a judge edit and checks that the guard rejects by rule with a stored reason."
+        ]
+      }
+    ],
+    tables: [
+      {
+        title: "Drill cards",
+        headers: ["Drill", "Early sign", "Recovery move"],
+        rows: [
+          ["Self confirming judge", "Approval rate near total", "Recalibrate judge, replay calibration sets"],
+          ["Diversity collapse", "Archive fills with near copies", "Novelty scoring plus fresh parents"],
+          ["Metric gaming", "Proxy rises, transfer stalls", "Block on held out gate, step difficulty down"],
+          ["Direction drift", "Goals shift without review", "Halt schedule, restore last kept mainline"],
+          ["Frozen path touch", "Patch lists judge or gate files", "Reject by rule, store reason"]
+        ]
+      }
+    ],
+    codeSamples: [
+      {
+        title: "Recovery commands",
+        language: "bash",
+        code: "git status --short --branch\ngit log --oneline -3\npy engine/rsi_loop.py --state engine_state --generation 3 --files worker/planner.py --changes 1 --passed true --gain 0.1 --cost 0.0"
+      }
+    ],
+    links: [
+      { label: "Safety boundary and governance", target: "/docs/safety" },
+      { label: "Build and run the atlas", target: "/docs/build" },
+      { label: "Benchmarks and transfer checks", target: "/docs/benchmarks" }
     ]
   }
 ];

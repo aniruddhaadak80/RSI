@@ -1,0 +1,36 @@
+{
+  "fixtures": [
+    {
+      "id": "math-word-one",
+      "title": "Single step word problem repair",
+      "difficulty": 1,
+      "public_check": "Solve ten held in word problems with shown answers",
+      "hidden_check": "Solve ten fresh word problems never shown during search",
+      "budget": "one small patch plus one test"
+    },
+    {
+      "id": "code-repair-one",
+      "title": "Narrow bug repair with regression guard",
+      "difficulty": 1,
+      "public_check": "Fix one failing unit plus keep neighbors green",
+      "hidden_check": "Fix one unseen variant with changed names",
+      "budget": "one small patch plus one test"
+    },
+    {
+      "id": "plan-state-one",
+      "title": "Short plan with state transition check",
+      "difficulty": 2,
+      "public_check": "Produce a three step plan that passes the shown validator",
+      "hidden_check": "Produce a plan for a fresh start state",
+      "budget": "one small patch plus one test"
+    },
+    {
+      "id": "cost-trade-one",
+      "title": "Quality gain with cost review",
+      "difficulty": 2,
+      "public_check": "Raise score while tokens stay flat or fall",
+      "hidden_check": "Repeat the gain on a fresh task with cost log attached",
+      "budget": "one small patch plus one test"
+    }
+  ]
+}

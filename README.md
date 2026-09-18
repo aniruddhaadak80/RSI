@@ -333,6 +333,12 @@ This project uses the MIT license. Use the code, learn from the diaries, adapt t
 
 When this atlas helps a project or a paper, cite the anchor works that made it possible alongside this repo. Credit Godel Machines for the classic frame, STaR for bootstrapped reasoning, Self Refine and Reflexion for behavior loops, FunSearch and AlphaEvolve for evaluator driven evolution, Self Rewarding Models for recursive training signals, Godel Agent and Darwin Godel Machine for self referential agents, the 2026 survey for the taxonomy, and the trusted repos for runnable patterns. A short citation file can be added once the remote RSI home is confirmed.
 
+## New In This Round
+
+The docs now include a plain words glossary at [docs slash glossary](https://aniruddhaadak-rsi.vercel.app/docs/glossary), a benchmark map at [docs slash benchmarks](https://aniruddhaadak-rsi.vercel.app/docs/benchmarks), and rehearsal drills at [docs slash failure drills](https://aniruddhaadak-rsi.vercel.app/docs/failure-drills). The glossary resets vocabulary in short sentences. The benchmark page maps public suites to skills and shows how held out transfer blocks quiet gaming. The drills page turns each named failure into a rehearsal with early signs plus recovery moves.
+
+The engine gains starter fixtures in engine slash fixtures dot json across math, code repair, planning, and cost trade tasks, each with a public check plus a hidden check. A new checker at engine slash check dot py reads any state folder and reports history shape, verdict reasons, and gate discipline with a clear pass or fail. The site gains sharing metadata, a sitemap at [sitemap](https://aniruddhaadak-rsi.vercel.app/sitemap.xml), and crawler rules at [robots](https://aniruddhaadak-rsi.vercel.app/robots.txt).
+
 ## Closing Note
 
 Progress here is quiet by design. Each kept patch is small. Each diary entry is plain. Each chart moves a little. Over many cycles, small kept wins compound into a stronger method and a clearer record. That steady rhythm is the whole promise of recursive self improvement when it is grounded, gated, and shared.
