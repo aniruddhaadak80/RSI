@@ -12,7 +12,7 @@
 
 This repository is a complete map and a working model of recursive self improvement for AI systems. The goal is simple to state and deep to build. A system watches its own work. It finds a small change. It tests the change with care. It keeps the change only when the test proves value. Then it repeats the cycle with a stronger self.
 
-The work here combines three streams into one place. The first stream is recent research from arXiv and independent labs. The second stream is public code from GitHub, reviewed with a strict spam filter. The third stream is the intended direction of the aniruddhaadak80 RSI project, which is a clear description plus a live demonstration of the same architecture. The remote RSI page is not publicly reachable at the time of writing, so this local build is shaped to become that home. It preserves the idea of describe plus demonstrate, and it adds the missing context of papers, code quality checks, safety gates, and docs.
+The work here combines three streams into one place. The first stream is recent research from arXiv and independent labs. The second stream is public code from GitHub, reviewed with a strict spam filter. The third stream is the direction of the aniruddhaadak80 RSI project, which is a clear description plus a live demonstration of the same architecture. This repo is that live public home. It preserves the idea of describe plus demonstrate, and it adds the context of papers, code quality checks, safety gates, and docs.
 
 Readers who want the short path can start with the simple explanation below. Readers who want depth can move through the architecture, the loop kernel, the evaluation method, the research tables, the repo verification table, and the runnable engine. A Next.js documentation app in the docs folder presents the same material in a calm reading layout with a left sidebar.
 
@@ -165,7 +165,7 @@ Spam patterns repeat with steady rhythm. Watch for repos that copy a paper abstr
 
 ## How This Build Combines All Sources
 
-The survey supplies the map. The trusted repos supply proven mechanics. The missing remote RSI page supplies the product intent of describe plus demonstrate. The combination lands as one system with three faces. The README tells the full story in one scroll. The engine runs the loop in Python with gates and memory. The docs app teaches the loop in calm pages with diagrams and tables.
+The survey supplies the map. The trusted repos supply proven mechanics. The RSI project supplies the product intent of describe plus demonstrate. The combination lands as one system with three faces. The README tells the full story in one scroll. The engine runs the loop in Python with gates and memory. The docs app teaches the loop in calm pages with diagrams and tables.
 
 Operator vocabulary follows MetaRSI in plain form. Data RSI grows good traces and marks the edge of skill. Harness RSI edits prompts, tools, contracts, and workflow without touching weights. Model RSI turns kept traces into training updates on a schedule. One loop kernel serves all three. One artifact vocabulary links task, trace, score, lesson, patch, and verdict. A two axis scheduler picks operator order and proposal policy. A meta policy revises the schedule across terms when evidence supports a shift.
 
