@@ -1,0 +1,4 @@
+# Minimal engine requirements
+# Keep this file tiny so review stays easy.
+# Python 3.10 or newer is enough for the loop kernel.
+# No web framework is needed for dry runs.
