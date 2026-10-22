@@ -127,12 +127,26 @@ def save_history(state_dir: Path, history: dict) -> None:
 
 
 def next_goal(history: dict) -> str:
+    """Pick the goal for the next generation from the last recorded verdict.
+
+    A rejected generation always asks for a repair. Only an accepted
+    generation may raise the difficulty. The lifetime win counter is a
+    fallback signal, never a reason to make the task harder while the loop
+    is still failing.
+    """
     losses = int(history.get("losses", 0))
     wins = int(history.get("wins", 0))
     difficulty = int(history.get("difficulty", 1))
-    if losses >= 2 and wins == 0:
+    generations = history.get("generations") or []
+    last_verdict = ""
+    if generations:
+        last_verdict = str(generations[-1].get("verdict", "")).strip()
+
+    if last_verdict == "reject":
+        if losses >= 2 and wins == 0:
+            return "repair smallest failing fixture at difficulty 1 and add one hidden check"
         return (
-            "repair smallest failing fixture at difficulty 1 and add one hidden check"
+            "repair one narrow failure at difficulty %d with one new test" % difficulty
         )
     if wins >= 2:
         return "raise difficulty by one notch and add one transfer check"
