@@ -3,3 +3,6 @@ node_modules
 out
 dist
 engine_state
+__pycache__
+*.pyc
+docs/package-lock.json
