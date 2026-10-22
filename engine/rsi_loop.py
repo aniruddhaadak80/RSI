@@ -12,10 +12,29 @@ import argparse
 import json
 from dataclasses import dataclass, asdict
 from datetime import datetime, timezone
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 
-FROZEN_HINTS = ("judge", "gate", "loop.py", "entrypoint", "policy")
+# The judge, the gate, the policy and the loop entry point are frozen. A path
+# is frozen when one of its segments *names* one of those concepts. Plain
+# substring matching is not used on purpose: it would treat ordinary worker
+# files such as worker/navigate.py or worker/aggregate.py as gate code
+# because the letters "gate" happen to sit inside the file name.
+FROZEN_EXACT_NAMES = frozenset(
+    {
+        "judge",
+        "gate",
+        "policy",
+        "entrypoint",
+        "entry_point",
+        "loop",
+        "rsi_loop",
+    }
+)
+
+# Reserved names may also be used as a prefix followed by a word separator, so
+# judge_helper.py and gate_check.py keep the protection they have today.
+FROZEN_PREFIX_NAMES = ("judge", "gate", "policy")
 
 
 @dataclass
@@ -31,12 +50,53 @@ def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
+def is_frozen_name(segment: str) -> bool:
+    """True when a path segment names a frozen concept.
+
+    A segment is frozen when it is exactly one of the reserved names, or when
+    it starts or ends with a reserved name followed by a word separator
+    ("gate_check", "legacy_gate").
+    """
+    name = segment.lower()
+    if name in FROZEN_EXACT_NAMES:
+        return True
+    for reserved in FROZEN_PREFIX_NAMES:
+        if not name.startswith(reserved):
+            continue
+        rest = name[len(reserved) :]
+        if len(rest) > 0 and rest[0] in "_-":
+            return True
+    for reserved in FROZEN_PREFIX_NAMES:
+        if not name.endswith(reserved):
+            continue
+        head = name[: len(name) - len(reserved)]
+        if len(head) > 0 and head[-1] in "_-":
+            return True
+    return False
+
+
 def touches_frozen_path(files: list[str]) -> bool:
-    lowered = [f.lower() for f in files]
-    for name in lowered:
-        for hint in FROZEN_HINTS:
-            if hint in name:
+    """True when any of the given paths points at frozen code.
+
+    Only the segments that actually name the frozen concept count: a
+    directory such as "judge/" or "gate/" freezes everything inside it, and a
+    file is frozen when its stem names the concept ("judge.py",
+    "rsi_loop.py"). Ordinary worker files stay free to be judged on their
+    own merits.
+    """
+    for raw in files:
+        parts = [
+            part.lower()
+            for part in PurePosixPath(str(raw).replace("\\", "/")).parts
+            if part not in (".", "")
+        ]
+        if len(parts) == 0:
+            continue
+        for segment in parts[:-1]:
+            if is_frozen_name(segment):
                 return True
+        if is_frozen_name(PurePosixPath(parts[-1]).stem):
+            return True
     return False
 
 
