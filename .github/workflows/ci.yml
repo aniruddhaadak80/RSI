@@ -1,0 +1,38 @@
+name: ci
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  engine:
+    name: engine tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run loop kernel tests
+        run: python -m unittest discover -s tests -t . -p "test_*.py" -v
+      - name: Smoke run the loop kernel
+        run: |
+          python engine/rsi_loop.py --state engine_state --generation 1 \
+            --files worker/planner.py --changes 1 --passed true --gain 0.2
+          python engine/rsi_loop.py --state engine_state --generation 2 \
+            --files judge/judge.py --changes 1 --passed true --gain 0.2
+          python engine/check.py --state engine_state
+  docs:
+    name: docs build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: docs
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Build the docs app
+        run: npm run build

@@ -40,7 +40,9 @@ def touches_frozen_path(files: list[str]) -> bool:
     return False
 
 
-def review_candidate(files: list[str], change_count: int, all_passed: bool, quality_gain: float) -> tuple[str, str]:
+def review_candidate(
+    files: list[str], change_count: int, all_passed: bool, quality_gain: float
+) -> tuple[str, str]:
     if touches_frozen_path(files):
         return ("reject", "frozen path touched")
     if change_count > 3:
@@ -65,18 +67,44 @@ def save_history(state_dir: Path, history: dict) -> None:
 
 
 def next_goal(history: dict) -> str:
+    """Pick the goal for the next generation from the last recorded verdict.
+
+    A rejected generation always asks for a repair. Only an accepted
+    generation may raise the difficulty. The lifetime win counter is a
+    fallback signal, never a reason to make the task harder while the loop
+    is still failing.
+    """
     losses = int(history.get("losses", 0))
     wins = int(history.get("wins", 0))
     difficulty = int(history.get("difficulty", 1))
-    if losses >= 2 and wins == 0:
-        return "repair smallest failing fixture at difficulty 1 and add one hidden check"
+    generations = history.get("generations") or []
+    last_verdict = ""
+    if generations:
+        last_verdict = str(generations[-1].get("verdict", "")).strip()
+
+    if last_verdict == "reject":
+        if losses >= 2 and wins == 0:
+            return "repair smallest failing fixture at difficulty 1 and add one hidden check"
+        return (
+            "repair one narrow failure at difficulty %d with one new test" % difficulty
+        )
     if wins >= 2:
         return "raise difficulty by one notch and add one transfer check"
     return "repair one narrow failure at difficulty %d with one new test" % difficulty
 
 
-def run_generation(state_dir: Path, generation: int, files: list[str], change_count: int, all_passed: bool, quality_gain: float, cost_delta: float) -> Verdict:
-    verdict_text, reason = review_candidate(files, change_count, all_passed, quality_gain)
+def run_generation(
+    state_dir: Path,
+    generation: int,
+    files: list[str],
+    change_count: int,
+    all_passed: bool,
+    quality_gain: float,
+    cost_delta: float,
+) -> Verdict:
+    verdict_text, reason = review_candidate(
+        files, change_count, all_passed, quality_gain
+    )
     verdict = Verdict(
         generation=generation,
         verdict=verdict_text,
@@ -90,7 +118,9 @@ def run_generation(state_dir: Path, generation: int, files: list[str], change_co
     payload["decided_at"] = utc_now()
     payload["goal"] = next_goal(load_history(state_dir))
     payload["files"] = files
-    (gen_dir / "verdict.json").write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    (gen_dir / "verdict.json").write_text(
+        json.dumps(payload, indent=2), encoding="utf-8"
+    )
     history = load_history(state_dir)
     history["generations"].append(payload)
     if verdict_text == "accept":
@@ -113,14 +143,40 @@ def run_generation(state_dir: Path, generation: int, files: list[str], change_co
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Run one bounded RSI generation with gated promotion")
-    parser.add_argument("--state", default="engine_state", help="Folder that holds history and generation records")
-    parser.add_argument("--generation", type=int, default=1, help="Generation number for this run")
-    parser.add_argument("--files", default="worker/planner.py", help="Comma separated file list in the candidate patch")
-    parser.add_argument("--changes", type=int, default=1, help="Number of files changed in the candidate patch")
-    parser.add_argument("--passed", default="true", choices=["true", "false"], help="Whether the full suite passed")
-    parser.add_argument("--gain", type=float, default=0.0, help="Quality gain against baseline")
-    parser.add_argument("--cost", type=float, default=0.0, help="Cost delta against baseline")
+    parser = argparse.ArgumentParser(
+        description="Run one bounded RSI generation with gated promotion"
+    )
+    parser.add_argument(
+        "--state",
+        default="engine_state",
+        help="Folder that holds history and generation records",
+    )
+    parser.add_argument(
+        "--generation", type=int, default=1, help="Generation number for this run"
+    )
+    parser.add_argument(
+        "--files",
+        default="worker/planner.py",
+        help="Comma separated file list in the candidate patch",
+    )
+    parser.add_argument(
+        "--changes",
+        type=int,
+        default=1,
+        help="Number of files changed in the candidate patch",
+    )
+    parser.add_argument(
+        "--passed",
+        default="true",
+        choices=["true", "false"],
+        help="Whether the full suite passed",
+    )
+    parser.add_argument(
+        "--gain", type=float, default=0.0, help="Quality gain against baseline"
+    )
+    parser.add_argument(
+        "--cost", type=float, default=0.0, help="Cost delta against baseline"
+    )
     return parser.parse_args()
 
 
@@ -130,9 +186,22 @@ def main() -> None:
     state_dir.mkdir(parents=True, exist_ok=True)
     files = [s.strip() for s in str(args.files).split(",") if len(s.strip()) > 0]
     all_passed = True if str(args.passed).lower() == "true" else False
-    verdict = run_generation(state_dir, int(args.generation), files, int(args.changes), all_passed, float(args.gain), float(args.cost))
-    print("generation %d verdict %s reason %s" % (verdict.generation, verdict.verdict, verdict.reason))
-    print("state folder %s history wins losses tracked in history.json" % str(state_dir))
+    verdict = run_generation(
+        state_dir,
+        int(args.generation),
+        files,
+        int(args.changes),
+        all_passed,
+        float(args.gain),
+        float(args.cost),
+    )
+    print(
+        "generation %d verdict %s reason %s"
+        % (verdict.generation, verdict.verdict, verdict.reason)
+    )
+    print(
+        "state folder %s history wins losses tracked in history.json" % str(state_dir)
+    )
 
 
 if __name__ == "__main__":
