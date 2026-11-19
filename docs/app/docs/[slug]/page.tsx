@@ -8,13 +8,14 @@ export function generateStaticParams() {
   });
 }
 
-export default function DocSlugPage({ params }: { params: { slug: string } }) {
-  const doc = getDoc(params.slug);
+export default async function DocSlugPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const doc = getDoc(slug);
   if (doc === undefined) {
     notFound();
   }
 
-  const nav = getPrevNext(params.slug);
+  const nav = getPrevNext(slug);
 
   return (
     <article className="doc-article">
